@@ -1,20 +1,35 @@
 import unittest
-from block import Block
+from constants import *
+
+from main import App
+from game import Game
+from block import Tetromino, Block
+
 
 class TestBlock(unittest.TestCase):
     def setUp(self):
-        self.block = Block("s")
+        app = App()
+        game = Game(app)
+        tetromino = Tetromino(game)
+        self.block = Block(tetromino, vec(0, 0))
 
-    def test_set_x(self):
-        self.block.set_x(0)
-        self.assertEqual(self.block.get_x(), 0)
+    def test_move(self):
+        self.block.move(MOVE_RIGHT)
+        pos = self.block.pos
+        self.assertEqual(pos, vec(5, 0))
 
-        self.block.set_x(1)
-        self.assertEqual(self.block.get_x(), 1)
+        self.block.move(MOVE_UP)
+        pos = self.block.pos
+        self.assertEqual(pos, vec(5, -1))
 
-    def test_set_y(self):
-        self.block.set_y(0)
-        self.assertEqual(self.block.get_y(), 0)
+        self.block.move(MOVE_DOWN)
+        pos = self.block.pos
+        self.assertEqual(pos, vec(5, 0))
 
-        self.block.set_y(1)
-        self.assertEqual(self.block.get_y(), 1)
+        self.block.move(MOVE_LEFT)
+        pos = self.block.pos
+        self.assertEqual(pos, vec(4, 0))
+
+    def test_rotate(self):
+        pos = self.block.rotate(vec(0, 0))
+        self.assertEqual(pos, vec(0, 4))

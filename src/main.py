@@ -1,66 +1,94 @@
-import pygame
-from block import Block
+import sys
+import pathlib
 
-def main():
-    # initialize pygame
-    pygame.init()
-    
-    # set title for window
-    pygame.display.set_caption("Tetris")
+from constants import *
 
-    block_size = 50
+from game import Game
 
-    # set size for window
-    screen = pygame.display.set_mode((block_size * 12, 800))
 
-    clock = pygame.time.Clock()
+class App:
+    def __init__(self):
+        # initialize pygame
+        pygame.init()
 
-    # bool for checking if game is running
-    running = True
+        # set title for window
+        pygame.display.set_caption("Tetris")
 
-    # add sprites
-    sprites = pygame.sprite.Group()
-    current_block = Block("s")
-    sprites.add(current_block)
+        # set size for window
+        self.screen = pygame.display.set_mode(WINDOW_SIZE)
 
-    # current game tick
-    tick = 0
+        # get ref to clock
+        self.clock = pygame.time.Clock()
 
-    # game loop
-    while running:
-        # handle events
-        for event in pygame.event.get():
-            # handle quit
-            if event.type == pygame.QUIT:
-                running = False
-            # handle input
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    current_block.set_x(current_block.get_x() - block_size)
-                elif event.key == pygame.K_RIGHT:
-                    current_block.set_x(current_block.get_x() + block_size)
-                elif event.key == pygame.K_UP:
-                     current_block.rotate()
-                elif event.key == pygame.K_DOWN:
-                      current_block.set_y(current_block.get_y() + block_size)
-        
-        dt = clock.tick(60) # 60 fps
+        # load assets
+        self.load_assets()
+
+        # create font
+        self.font = pygame.font.SysFont('arial', 20)
+
+        # create game instance
+        self.game = Game(self)
+
+    def load_assets(self):
+        self.images = {}
+
+        # find png files
+        files = [item for item in pathlib.Path(
+            "src/assets").rglob("*.png") if item.is_file]
+
+        # loop through files
+        for file in files:
+            # load image
+            image = pygame.image.load(file)
+
+            # scale image
+            image = pygame.transform.scale(image, (BLOCK_SIZE, BLOCK_SIZE))
+
+            # store file using name
+            self.images[file.name] = image
+
+    def tick(self):
+        dt = self.clock.tick(FPS)  # wait for next tick
 
         # tick game
-        tick += 1
-        if (tick % 60 == 0):
-            current_block.set_y(current_block.get_y() + block_size)
+        self.game.tick(dt)
+
+    def draw(self):
+        # set bg color
+        self.screen.fill("blue")
 
         # set bg color
-        screen.fill("black")
+        self.screen.fill("black", rect=(SIDE_SIZE * BLOCK_SIZE,
+                         0, GRID_W * BLOCK_SIZE, GRID_H * BLOCK_SIZE))
 
-        # draw sprites
-        sprites.draw(screen)
+        # draw game
+        self.game.draw()
 
         # update screen
         pygame.display.flip()
-    
-    pygame.quit()
+
+    def process_events(self):
+        for event in pygame.event.get():
+
+            # handle quit
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            # handle input
+            elif event.type == pygame.KEYDOWN:
+                self.game.handle_input(event.key, True)
+            elif event.type == pygame.KEYUP:
+                self.game.handle_input(event.key, False)
+
+    def start(self):
+        # game loop
+        while True:
+            self.process_events()
+            self.tick()
+            self.draw()
+
 
 if __name__ == "__main__":
-    main()
+    app = App()
+    app.start()

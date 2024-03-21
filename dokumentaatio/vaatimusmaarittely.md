@@ -16,16 +16,16 @@ Toinen painike muuttaa pelin vaikeustasoa (palikoiden putoamisnopeutta).
 Kolmas painike lopettaa ja sulkee sovelluksen.
 Lisäksi näytöllä lukee käyttäjän saama suurin pistemäärä.
 
-## Peli
+### Peli
 Näytöllä on 10x20 ruudukko.
-Yläreunasta putoaa yksi palikka kerrallaan.
+Näytön yläreunasta alkaa putoamaan yksi palikka kerrallaan alaspäin.
 Palikkaa voi pyöritellä nuolinäppäimillä.
 Palikan putoamista voi nopeuttaa painamalla nuolinäppäintä alaspäin.
-Kun palikka osuu ruudokon alareunaan tai toiseen palikkaan niin, ettei se enää voi liikkua alaspäin, putoaa seuraava palikka.
-Kun kokonainen rivi on saatu valmiiksi, se häviää, pistemäärä lisääntyy, pelin nopeus kasvaa ja sen yläpuolella olevat palikat putoavat alaspäin yhdenrivin.
-Kun palikka osuu toiseenpalikkaan niin, että se on ruudokon yläpuolella, peli päättyy.
-Ruudokon vieressä oikealla näytetään seuraavaksi putoava palikka ja tilastot: pistemäärä, taso, kokonaiseksi saadut rivit.
+Kun palikka osuu näytön alareunaan tai toiseen palikkaan niin, ettei se enää voi liikkua alaspäin, putoaa seuraava palikka.
+Kun kokonainen rivi on saatu valmiiksi, se häviää, pistemäärä lisääntyy, pelin nopeus kasvaa ja sen yläpuolella olevat palikat putoavat alaspäin yhden rivin.
+Kun palikka osuu toiseen palikkaan niin, että se on ruudukon yläpuolella, peli päättyy.
+Ruudukon vieressä oikealla näytetään seuraavaksi putoava palikka ja tilastot: pistemäärä, taso, kokonaiseksi saadut rivit.
 
-# Tulokset
+### Tulokset
 Pelin päätyttyä näytetään tulokset, jossa on pelistä saatu pistemäärä, kokonaiseksi saadut rivit ja vaikeustaso.
 Lisäksi näytetään painike "Palaa", joka palaa pelivalikkoon.

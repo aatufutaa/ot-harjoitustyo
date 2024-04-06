@@ -19,7 +19,7 @@ Lisäksi näytöllä lukee käyttäjän saama suurin pistemäärä.
 ### Peli
 Näytöllä on 10x20 ruudukko.
 Näytön yläreunasta alkaa putoamaan yksi palikka kerrallaan alaspäin.
-Palikkaa voi pyöritellä nuolinäppäimillä.
+Palikkaa voi liikutella ja pyöritellä nuolinäppäimillä.
 Palikan putoamista voi nopeuttaa painamalla nuolinäppäintä alaspäin.
 Kun palikka osuu näytön alareunaan tai toiseen palikkaan niin, ettei se enää voi liikkua alaspäin, putoaa seuraava palikka.
 Kun kokonainen rivi on saatu valmiiksi, se häviää, pistemäärä lisääntyy, pelin nopeus kasvaa ja sen yläpuolella olevat palikat putoavat alaspäin yhden rivin.

@@ -6,5 +6,5 @@ Sovellus on Tetris peli, jossa tarkoituksena on kerätä pisteitä pudottamalla 
 - [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
 - [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
 - [Changelog](dokumentaatio/changelog.md)
-
+- [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)
 

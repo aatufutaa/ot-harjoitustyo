@@ -1,4 +1,4 @@
-from constants import *
+from constants import pygame, GRID_WIDTH, GRID_HEIGHT, Vec, FPS, BLOCK_SIZE
 
 from tetromino import Tetromino
 
@@ -31,22 +31,68 @@ class Game:
             mul = 1  # if speed up use 1
         threshold = 1000.0 / FPS * mul
 
-        if self.timer >= threshold:
-            self.check_for_full_rows()
+        if self.timer < threshold:
+            # update sprites
+            self.sprites.update()
+            return
 
-            # move tetromino 1 block down
-            if self.tetromino.move(vec(0, 1)):
-                print("tetromino hit ground!")
-                pass  # tetromino landed here!!!
+        self.check_for_full_rows()
 
-            # reset timer to 0
-            self.timer = 0.0
+        # move tetromino 1 block down
+        if self.tetromino.move(Vec(0, 1)):
+            if self.tetromino.blocks[0].pos.y == 0:  # if block did not move
+                # game ended
+                print("game ended")
+                pygame.time.wait(200)
+                self.__init__(self.app)  # start a new game
+                return
+
+            # add collision blocks
+            for block in self.tetromino.blocks:
+                x = int(block.pos.x)
+                y = int(block.pos.y)
+                if y >= 0:
+                    self.collisions[y][x] = block
+
+            # create new tetromino
+            self.tetromino = Tetromino(self)
+
+        # reset timer to 0
+        self.timer = 0.0
 
         # update sprites
         self.sprites.update()
 
     def check_for_full_rows(self):
-        pass
+        row = GRID_HEIGHT - 1
+        # start from bottom
+        for y in range(GRID_HEIGHT - 1, -1, -1):
+            # check if all blocks in row exist
+            count = 0
+            for x in range(GRID_WIDTH):
+                if self.collisions[row][x]:
+                    count += 1
+                else:
+                    break
+
+            # not a full row move on
+            if count != GRID_WIDTH:
+                row -= 1
+                continue
+
+            # remove blocks
+            for x in range(GRID_WIDTH):
+                self.collisions[row][x].kill()
+                self.collisions[row][x] = 0
+
+            # move blocks above down 1 block
+            for i in range(row - 1, -1, -1):
+                for x in range(GRID_WIDTH):
+                    if not self.collisions[i][x]:
+                        continue
+                    self.collisions[i][x].pos = Vec(x, i + 1)  # move block down
+                    self.collisions[i + 1][x] = self.collisions[i][x]  # move collision down
+                    self.collisions[i][x] = 0  # remove old collision
 
     def draw(self):
         # fill bg
@@ -63,14 +109,23 @@ class Game:
         # draw sprites
         self.sprites.draw(self.app.screen)
 
+        # for debug draw collisions
+        for y in range(GRID_HEIGHT):
+            for x in range(GRID_WIDTH):
+                if self.collisions[y][x]:
+                    pygame.draw.rect(self.app.screen,
+                                     "red",
+                                     (x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE),
+                                     1)
+
     def handle_input(self, key, down):
         if down:
             # move left
             if key == pygame.K_LEFT:
-                self.tetromino.move(vec(-1, 0))
+                self.tetromino.move(Vec(-1, 0))
             # move right
             elif key == pygame.K_RIGHT:
-                self.tetromino.move(vec(1, 0))
+                self.tetromino.move(Vec(1, 0))
             # rotate
             elif key == pygame.K_UP:
                 self.tetromino.rotate()
@@ -88,16 +143,14 @@ class Game:
 
         # check x in area
         if x < 0 or x >= GRID_WIDTH:
-            print("colliding x " + str(x))
             return True
 
         # check y in area
         if y >= GRID_HEIGHT:
-            print("colliding y " + str(y))
             return True
 
         # check for already fallen blocks
-        if self.collisions[y][x]:
+        if y >= 0 and self.collisions[y][x]:
             return True
 
         return False

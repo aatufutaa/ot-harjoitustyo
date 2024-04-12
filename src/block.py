@@ -1,4 +1,4 @@
-from constants import *
+from constants import Vec, GRID_WIDTH, BLOCK_SIZE, pygame
 
 
 class Block(pygame.sprite.Sprite):
@@ -9,7 +9,7 @@ class Block(pygame.sprite.Sprite):
         self.rect = image.get_rect()
 
         # set pos to center
-        self.pos = vec(pos) + vec(GRID_WIDTH / 2 - 1, 0)
+        self.pos = Vec(pos) + Vec(GRID_WIDTH / 2 - 1, 0)
 
     def update(self):
         self.rect.topleft = self.pos * BLOCK_SIZE

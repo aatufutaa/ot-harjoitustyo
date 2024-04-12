@@ -1,7 +1,7 @@
 import sys
 import os
 
-from constants import *
+from constants import pygame, GRID_WIDTH, GRID_HEIGHT, BLOCK_SIZE, FPS
 from game import Game
 from tetromino import TETROMINOES
 
@@ -30,15 +30,15 @@ class App:
 
         # loop through files
         assets_path = os.path.dirname(os.path.abspath(__file__))
-        for x in TETROMINOES.keys():
+        for x in TETROMINOES:
             # load image
-            image = pygame.image.load(assets_path + "/assets/" + x + "_block.png")
+            image = pygame.image.load(assets_path + "/assets/" + x[0] + "_block.png")
 
             # scale image
             image = pygame.transform.scale(image, (BLOCK_SIZE, BLOCK_SIZE))
 
             # store image using shape as key
-            self.images[x] = image
+            self.images[x[0]] = image
 
     def process_events(self):
         for event in pygame.event.get():

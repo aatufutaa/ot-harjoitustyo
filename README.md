@@ -8,7 +8,7 @@ Sovellus on Tetris peli, jossa tarkoituksena on kerätä pisteitä pudottamalla 
 - [Changelog](dokumentaatio/changelog.md)
 - [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)
 
-[Release 1](releases/tag/vikko5)
+[Release 1](https://github.com/aatufutaa/ot-harjoitustyo/releases/tag/vikko5)
 
 ## Asennus
 Riippuvuusten asentaminen

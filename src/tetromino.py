@@ -28,6 +28,10 @@ class Tetromino:
 
         self.blocks = [Block(game, image, pos) for pos in blocks]
 
+    def reset_pos(self):
+        for block in self.blocks:
+            block.reset_pos()
+
     def move(self, vel):
         # test for collisions
         for block in self.blocks:

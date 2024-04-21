@@ -1,4 +1,4 @@
-from constants import pygame, GRID_WIDTH, GRID_HEIGHT, Vec, FPS, BLOCK_SIZE
+from constants import pygame, GRID_WIDTH, GRID_HEIGHT, Vec, FPS, BLOCK_SIZE, STATS_PAGE_WIDTH
 
 from tetromino import Tetromino
 
@@ -12,6 +12,10 @@ class Game:
 
         # create first tetromino
         self.tetromino = Tetromino(self)
+        self.tetromino.reset_pos()
+
+        # create next tetromino
+        self.next_tetromino = Tetromino(self)
 
         # set timer to 0
         self.timer = 0.0
@@ -21,6 +25,8 @@ class Game:
 
         self.speed = 18  # base multiplier for speed
         self.speed_up = False
+
+        self.points = 0
 
     def tick(self, dt):
         self.timer += dt
@@ -43,8 +49,18 @@ class Game:
             if self.tetromino.blocks[0].pos.y == 0:  # if block did not move
                 # game ended
                 print("game ended")
+
+                # wait for a while
                 pygame.time.wait(200)
-                self.__init__(self.app)  # start a new game
+
+                # reset points text
+                self.app.points_text = self.app.font.render("Points: 0", True, (255, 255, 255))
+                # update last points
+                self.app.last_points_text = self.app.font.render("Last Points: " + str(self.points),
+                                                                 True,
+                                                                 (255, 255, 255))
+
+                self.app.game = Game(self.app)  # start a new game
                 return
 
             # add collision blocks
@@ -55,7 +71,15 @@ class Game:
                     self.collisions[y][x] = block
 
             # create new tetromino
-            self.tetromino = Tetromino(self)
+            self.tetromino = self.next_tetromino
+            self.tetromino.reset_pos()
+            self.next_tetromino = Tetromino(self)
+
+            # add point
+            self.points += 1
+            self.app.points_text = self.app.font.render("Points: " + str(self.points),
+                                                        True,
+                                                        (255, 255, 255))
 
         # reset timer to 0
         self.timer = 0.0
@@ -94,9 +118,29 @@ class Game:
                     self.collisions[i + 1][x] = self.collisions[i][x]  # move collision down
                     self.collisions[i][x] = 0  # remove old collision
 
+            # add point
+            self.points += 100
+            self.app.points_text = self.app.font.render("Points: " + str(self.points),
+                                                        True,
+                                                        (255, 255, 255))
+
     def draw(self):
         # fill bg
         self.app.screen.fill("black")
+
+        # fill stats area
+        self.app.screen.fill((20, 20, 20), (GRID_WIDTH * BLOCK_SIZE,
+                                            0, STATS_PAGE_WIDTH * BLOCK_SIZE,
+                                            GRID_HEIGHT * BLOCK_SIZE))
+
+        # draw next block
+        self.app.screen.blit(self.app.next_block_text, self.app.next_block_pos)
+
+        # draw points
+        self.app.screen.blit(self.app.points_text, self.app.points_pos)
+
+        # draw last points
+        self.app.screen.blit(self.app.last_points_text, self.app.last_points_pos)
 
         # draw grid
         for x in range(0, GRID_WIDTH):
@@ -108,15 +152,6 @@ class Game:
 
         # draw sprites
         self.sprites.draw(self.app.screen)
-
-        # for debug draw collisions
-        for y in range(GRID_HEIGHT):
-            for x in range(GRID_WIDTH):
-                if self.collisions[y][x]:
-                    pygame.draw.rect(self.app.screen,
-                                     "red",
-                                     (x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE),
-                                     1)
 
     def handle_input(self, key, down):
         if down:

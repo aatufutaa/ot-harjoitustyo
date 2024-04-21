@@ -38,3 +38,20 @@ move()
 rotate()
 }
 ```
+
+Pelisilmukan toiminta sekvenssikaaviona
+```mermaid
+sequenceDiagram
+    participant main
+    participant game
+    participant tetromino
+    participant block
+    main->>game: Game()
+    game->>tetromino: Tetromino()
+    tetromino->>block: Block()
+    main->>game: process_events()
+    main->>game: tick()
+    game->>tetromino: move()
+    tetromino->>block: move()
+    main->>game: draw()
+```

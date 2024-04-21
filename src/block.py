@@ -8,8 +8,15 @@ class Block(pygame.sprite.Sprite):
         self.image = image
         self.rect = image.get_rect()
 
-        # set pos to center
-        self.pos = Vec(pos) + Vec(GRID_WIDTH / 2 - 1, 0)
+        # set pos to next
+        self.pos = Vec(pos) + Vec(game.app.next_block_pos[0] / BLOCK_SIZE,
+                                  game.app.next_block_pos[1] / BLOCK_SIZE + 3)
+
+        # get start pos (center)
+        self.start_pos = Vec(pos) + Vec(GRID_WIDTH / 2 - 1, 0)
+
+    def reset_pos(self):
+        self.pos = self.start_pos
 
     def update(self):
         self.rect.topleft = self.pos * BLOCK_SIZE

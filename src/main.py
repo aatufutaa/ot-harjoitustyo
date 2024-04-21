@@ -1,7 +1,7 @@
 import sys
 import os
 
-from constants import pygame, GRID_WIDTH, GRID_HEIGHT, BLOCK_SIZE, FPS
+from constants import pygame, GRID_WIDTH, GRID_HEIGHT, BLOCK_SIZE, FPS, STATS_PAGE_WIDTH
 from game import Game
 from tetromino import TETROMINOES
 
@@ -13,7 +13,8 @@ class App:
 
         # init screen
         pygame.display.set_caption("Tetris")
-        self.screen = pygame.display.set_mode((GRID_WIDTH * BLOCK_SIZE, GRID_HEIGHT * BLOCK_SIZE))
+        self.screen = pygame.display.set_mode(((GRID_WIDTH + STATS_PAGE_WIDTH) * BLOCK_SIZE,
+                                               GRID_HEIGHT * BLOCK_SIZE))
 
         # get clock
         self.clock = pygame.time.Clock()
@@ -21,6 +22,27 @@ class App:
         # load images
         self.images = {}
         self.load_assets()
+
+        # create font
+        self.font = pygame.font.SysFont('arial', 20)
+
+        # next block text
+        self.next_block_text = self.font.render("Next", True, (255, 255, 255))
+        self.next_block_pos = (((GRID_WIDTH+STATS_PAGE_WIDTH/2) * BLOCK_SIZE
+                                - self.font.size("Next")[0] / 2),
+                               GRID_HEIGHT / 5.0 * BLOCK_SIZE)
+
+        # points text
+        self.points_text = self.font.render("Points: 0", True, (255, 255, 255))
+        self.points_pos = (((GRID_WIDTH + STATS_PAGE_WIDTH / 2) * BLOCK_SIZE
+                            - self.font.size("Points: 0")[0] / 2),
+                               self.next_block_pos[1] + BLOCK_SIZE * 6)
+
+        # last points text
+        self.last_points_text = self.font.render("Last Points: -", True, (255, 255, 255))
+        self.last_points_pos = (((GRID_WIDTH + STATS_PAGE_WIDTH / 2) * BLOCK_SIZE
+                                 - self.font.size("Last Points: -")[0] / 2),
+                           self.next_block_pos[1] + BLOCK_SIZE * 7)
 
         # create a new game
         self.game = Game(self)

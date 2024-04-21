@@ -11,3 +11,8 @@
 - Palikan pudottua alkaa putoamaan uusi palikka
 - Kokonaiseksi saadut rivit häviävät ja sen yläpuolella olevat rivit putoavat yhden rivin alas
 - Kun uudella putoavalla palikalla ei ole enää tilaa pudota alas niin peli päättyy ja alkaa uusi peli
+
+## Viikko 5
+- Pisteet lisääntyy kun uusia palikoita pudotetaan ja uusia riviä saa kokonaiseksi
+- Ruudukon vieressä oikealla näytetään seuraavaksi putoava palikka ja saatu pistemäärä
+- Pelin päätyttyä alkaa uusi peli ja näytön sivulla näytetään edellisestä pelistä saatu pistemäärä

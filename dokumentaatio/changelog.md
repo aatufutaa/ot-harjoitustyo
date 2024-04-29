@@ -16,3 +16,6 @@
 - Pisteet lisääntyy kun uusia palikoita pudotetaan ja uusia riviä saa kokonaiseksi
 - Ruudukon vieressä oikealla näytetään seuraavaksi putoava palikka ja saatu pistemäärä
 - Pelin päätyttyä alkaa uusi peli ja näytön sivulla näytetään edellisestä pelistä saatu pistemäärä
+
+## Viikko 6
+- Lisää testejä ja docstring

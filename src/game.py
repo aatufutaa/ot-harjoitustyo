@@ -4,7 +4,14 @@ from tetromino import Tetromino
 
 
 class Game:
+    """
+    Class that handles all game logic
+    """
     def __init__(self, app):
+        """
+        Constructor for Game class that inits game
+        :param app:
+        """
         self.app = app
 
         # create a group for all sprites
@@ -29,6 +36,10 @@ class Game:
         self.points = 0
 
     def tick(self, dt):
+        """
+        Ticks game and handles game logic
+        :param dt:
+        """
         self.timer += dt
 
         # calc a tetromino tick time
@@ -88,6 +99,9 @@ class Game:
         self.sprites.update()
 
     def check_for_full_rows(self):
+        """
+        Checks for full rows
+        """
         row = GRID_HEIGHT - 1
         # start from bottom
         for y in range(GRID_HEIGHT - 1, -1, -1):
@@ -125,6 +139,9 @@ class Game:
                                                         (255, 255, 255))
 
     def draw(self):
+        """
+        Draws game UI and blocks
+        """
         # fill bg
         self.app.screen.fill("black")
 
@@ -154,6 +171,11 @@ class Game:
         self.sprites.draw(self.app.screen)
 
     def handle_input(self, key, down):
+        """
+        Handles key input
+        :param key:
+        :param down:
+        """
         if down:
             # move left
             if key == pygame.K_LEFT:
@@ -173,6 +195,10 @@ class Game:
                 self.speed_up = False
 
     def test_block_collision(self, pos):
+        """
+        Check for block collision
+        :param pos:
+        """
         x = int(pos.x)
         y = int(pos.y)
 

@@ -7,7 +7,13 @@ from tetromino import TETROMINOES
 
 
 class App:
+    """
+    Main class for the App, inits pygame, loads assets, handles game loop
+    """
     def __init__(self):
+        """
+        Constructor for the App class
+        """
         # init pygame
         pygame.init()
 
@@ -48,6 +54,9 @@ class App:
         self.game = Game(self)
 
     def load_assets(self):
+        """
+        Loads all images from the /assets folder
+        """
         # find png files
 
         # loop through files
@@ -63,6 +72,9 @@ class App:
             self.images[x[0]] = image
 
     def process_events(self):
+        """
+        Processes pygame input such as key up and down input
+        """
         for event in pygame.event.get():
 
             # handle app exit
@@ -77,17 +89,26 @@ class App:
                 self.game.handle_input(event.key, False)
 
     def tick(self):
+        """
+        Ticks the game every X ms
+        """
         dt = self.clock.tick(FPS)  # wait for next frame
 
         self.game.tick(dt)  # tick game with delta time
 
     def draw(self):
+        """
+        Draws the game and updates the display surface to the screen
+        """
         self.game.draw()
 
         # update screen
         pygame.display.flip()
 
     def start(self):
+        """
+        Starts the game loop
+        """
         # start a game loop
         while True:
             self.process_events()

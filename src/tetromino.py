@@ -14,7 +14,14 @@ TETROMINOES = {
 
 
 class Tetromino:
+    """
+    Class that handles blocks, moves them and rotates them
+    """
     def __init__(self, game):
+        """
+        Constructor for Tetromino that gets a random shape and creates blocks for it
+        :param game:
+        """
         self.game = game
 
         # get a random shape
@@ -29,10 +36,17 @@ class Tetromino:
         self.blocks = [Block(game, image, pos) for pos in blocks]
 
     def reset_pos(self):
+        """
+        Resets block position to default
+        """
         for block in self.blocks:
             block.reset_pos()
 
     def move(self, vel):
+        """
+        Moves block with velocity
+        :param vel:
+        """
         # test for collisions
         for block in self.blocks:
             if self.game.test_block_collision(block.pos + vel):
@@ -45,6 +59,9 @@ class Tetromino:
         return False
 
     def rotate(self):
+        """
+        Rotates all blocks
+        """
         # get pos for first block
         pos = self.blocks[0].pos
 
